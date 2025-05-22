@@ -7,8 +7,8 @@ A plugin to share bans across multiple IW4MAdmin servers via a centralized API. 
 ## 🔑 API Key Access
 
 To use the shared banlist API, you will need an API key.  
-Please contact **draakoor** via **Discord** to request one.
-
+Please contact **draakoor** via **Discord** to request one.  
+Frontend: https://hsngaming.de/api/bans.php
 ---
 
 ## 📦 Installation
