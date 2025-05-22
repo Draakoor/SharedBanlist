@@ -15,7 +15,7 @@ namespace SharedBanListPlugin
     public class SharedBanListPlugin : IPlugin
     {
         public string Name => "SharedBanListPlugin";
-        public float Version => 1.9f;
+        public float Version => 2.0f;
         public string Author => "Draakoor";
 
         private readonly HttpClient _httpClient;
@@ -136,6 +136,10 @@ namespace SharedBanListPlugin
             {
                 return OnClientBannedAsync(e, server);
             }
+            if (e.Type == GameEvent.EventType.Unban)
+            {
+                return OnClientUnbannedAsync(e, server);
+            }
             if (e.Type == GameEvent.EventType.Connect)
             {
                 return OnClientConnectAsync(e, server);
@@ -185,6 +189,46 @@ namespace SharedBanListPlugin
             catch (Exception ex)
             {
                 Console.WriteLine($"Failed to send ban to shared ban list for {ban.PlayerName}: {ex.Message}");
+            }
+        }
+
+        private async Task OnClientUnbannedAsync(GameEvent e, Server server)
+        {
+            if (e.Target == null)
+            {
+                if (_logNullClients)
+                    Console.WriteLine("OnClientUnbannedAsync: Target client is null. Skipping unban submission.");
+                return;
+            }
+
+            if (IsBot(e.Target))
+            {
+                Console.WriteLine($"OnClientUnbannedAsync: Target {e.Target.Name ?? "Unknown"} is a bot. Skipping unban submission.");
+                return;
+            }
+
+            var playerId = e.Target.NetworkId.ToString();
+            var playerName = e.Target.Name ?? "Unknown";
+
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _apiKey);
+
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Delete, $"{_apiEndpoint}?player_id={Uri.EscapeDataString(playerId)}");
+                var response = await _httpClient.SendAsync(request);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Failed to unban player {playerName} from shared ban list: Response status code {(int)response.StatusCode} ({response.ReasonPhrase}). Response: {responseBody}");
+                    return;
+                }
+
+                Console.WriteLine($"Player {playerName} unbanned from shared ban list.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to unban player {playerName} from shared ban list: {ex.Message}");
             }
         }
 

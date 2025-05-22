@@ -151,6 +151,45 @@ if ($method === 'POST') {
     error_log("Returning bans: " . json_encode($bans));
     http_response_code(200);
     echo json_encode($bans);
+} elseif ($method === 'DELETE') {
+    // Handle unban request
+    $player_id = isset($_GET['player_id']) ? $_GET['player_id'] : '';
+    if (empty($player_id)) {
+        error_log("Missing player_id for DELETE request");
+        http_response_code(400);
+        echo json_encode(['error' => 'Missing player_id']);
+        exit;
+    }
+
+    $stmt = $conn->prepare("DELETE FROM bans WHERE player_id = ?");
+    if (!$stmt) {
+        error_log("Prepare failed for DELETE: " . $conn->error);
+        http_response_code(500);
+        echo json_encode(['error' => 'Database error during DELETE preparation: ' . $conn->error]);
+        exit;
+    }
+
+    $stmt->bind_param("s", $player_id);
+    if (!$stmt->execute()) {
+        error_log("DELETE failed: " . $stmt->error);
+        http_response_code(500);
+        echo json_encode(['error' => 'Failed to delete ban: ' . $stmt->error]);
+        exit;
+    }
+
+    $affected_rows = $stmt->affected_rows;
+    $stmt->close();
+
+    if ($affected_rows === 0) {
+        error_log("No ban found for player_id: $player_id");
+        http_response_code(404);
+        echo json_encode(['error' => 'No ban found for player_id: ' . $player_id]);
+        exit;
+    }
+
+    error_log("Ban deleted successfully for player_id: $player_id");
+    http_response_code(200);
+    echo json_encode(['status' => 'Ban deleted successfully']);
 } elseif ($method === 'HEAD') {
     // Test endpoint for database connectivity
     $result = $conn->query("SELECT 1");
