@@ -1,0 +1,34 @@
+# SharedBanlist Plugin for IW4MAdmin
+
+A plugin to share bans across multiple IW4MAdmin servers via a centralized API. Ideal for communities that want to maintain a global banlist between servers.
+
+---
+
+## 🔑 API Key Access
+
+To use the shared banlist API, you will need an API key.  
+Please contact **draakoor** via **Discord** to request one.
+
+---
+
+## 📦 Installation
+
+1. **Download the Plugin**  
+   Go to the [Releases](https://github.com/draakoor/sharedbanlist/releases) section and download the latest `.dll` file.
+
+2. **Install the Plugin**  
+   Place the `.dll` in the `Plugins` folder of your IW4MAdmin installation.
+
+3. **Restart IW4MAdmin**
+
+4. **Configure the Plugin**  
+   Create or edit the following file:  
+   `Configuration/sharedbanlist.json`
+
+   Example configuration:
+   ```json
+   {
+     "ApiEndpoint": "https://hsngaming.de/api/api.php",
+     "ApiKey": "yourapikey",
+     "BanMethod": "kick"
+   }
