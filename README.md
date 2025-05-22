@@ -34,3 +34,8 @@ Frontend: https://hsngaming.de/api/bans.php
      "ApiKey": "yourapikey",
      "BanMethod": "kick" // or banclient or ipban
    }
+
+## Extra Information:
+
+1. HMW-Mod/H1-Mod only supports kick method
+2. Unbaning will be add later, tired af right now :D
