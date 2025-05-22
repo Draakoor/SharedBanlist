@@ -5,7 +5,7 @@ header('Content-Type: text/html; charset=UTF-8');
 $db_host = 'host';
 $db_user = 'user';
 $db_pass = 'pass';
-$db_name = 'db';
+$db_name = 'Db';
 
 // Create database connection
 $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
@@ -16,7 +16,10 @@ if ($conn->connect_error) {
 }
 
 // Query to fetch all bans
-$sql = "SELECT player_id, player_name, reason, timestamp, server, ip_address FROM bans ORDER BY timestamp DESC";
+$sql = "SELECT b.player_id, b.player_name, b.reason, b.timestamp, b.server, b.ip_address, a.group_name
+        FROM bans b
+        LEFT JOIN api_keys a ON b.api_key_id = a.id
+        ORDER BY b.timestamp DESC";
 $result = $conn->query($sql);
 
 ?>
@@ -75,6 +78,7 @@ $result = $conn->query($sql);
                 <th>Reason</th>
                 <th>Timestamp</th>
                 <th>Server</th>
+                <th>Community/Clan</th>
                 <!-- <th>IP Address</th> --> <!-- Commented out to hide IP addresses; uncomment to show -->
             </tr>
             <?php while ($row = $result->fetch_assoc()): ?>
@@ -85,6 +89,7 @@ $result = $conn->query($sql);
                     <td><?php echo htmlspecialchars($row['timestamp']); ?></td>
                     <td><?php echo htmlspecialchars($row['server']); ?></td>
                     <!-- <td><?php echo htmlspecialchars($row['ip_address']); ?></td> --> <!-- Commented out -->
+                    <td><?php echo htmlspecialchars($row['group_name']); ?></td>
                 </tr>
             <?php endwhile; ?>
         </table>
