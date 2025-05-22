@@ -1,6 +1,6 @@
 # SharedBanlist Plugin for IW4MAdmin
 
-A plugin to share bans across multiple IW4MAdmin servers via a centralized API. Ideal for communities that want to maintain a global banlist between servers.
+A plugin to share bans with other communitys & clans.
 
 ---
 
