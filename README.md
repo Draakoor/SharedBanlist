@@ -32,5 +32,5 @@ Frontend: https://hsngaming.de/api/bans.php
    {
      "ApiEndpoint": "https://hsngaming.de/api/api.php",
      "ApiKey": "yourapikey",
-     "BanMethod": "kick"
+     "BanMethod": "kick" // or banclient or ipban
    }
