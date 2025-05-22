@@ -9,6 +9,8 @@ A plugin to share bans with other communitys & clans.
 To use the shared banlist API, you will need an API key.  
 Please contact **draakoor** via **Discord** to request one.  
 Frontend: https://hsngaming.de/api/bans.php
+<img width="1907" alt="image" src="https://github.com/user-attachments/assets/008acc38-9daf-4a44-bc89-a15e14680b20" />
+
 ---
 
 ## 📦 Installation
